@@ -29,8 +29,31 @@ class Article extends Model
 		$this->attributes['published_at'] = Carbon::parse($date);
 	}
 
+    public function setBodyAttribute($input)
+    {
+        $this->attributes['body'] = strip_tags($input, '<h1><h2><h3><p><span><ol><ul><li>');
+    }
+
     public function user() {
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Get the tags associated with the given article.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags() {
+        return $this->belongsToMany('App\Tag')->withTimestamps();
+    }
+
+    /**
+     * Get a list of tag ids associated with the current article.
+     *
+     * @return mixed
+     */
+    public function getTagListAttribute() {
+        return $this->tags->lists('id')->toArray();
     }
 
 }

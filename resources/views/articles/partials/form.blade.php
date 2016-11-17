@@ -6,12 +6,17 @@
 
 <div class="form-group">
     {!! Form::label('body', 'Body:') !!}
-    {!! Form::textarea('body', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('body', null, ['class' => 'form-control', 'required' => 'true']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('tag_list', 'Tags:') !!}
+    {!! Form::select('tag_list[]', $tags, null, ['class' => 'form-control', 'multiple']) !!}
 </div>
 
 <div class="form-group">
     {!! Form::label('published_at', 'Publish on:') !!}
-    {!! Form::input('date', 'published_at', date('Y-m-d'), ['class' => 'form-control']) !!}
+    {!! Form::input('date', 'published_at', date('Y-m-d'), ['class' => 'form-control tag-list']) !!}
 </div>
 
 <div class="form-group">

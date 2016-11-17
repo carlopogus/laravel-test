@@ -37,7 +37,26 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        // $this->middleware('guest', ['except' => ['logout', 'users']]);
+    }
+
+    public function users() {
+        $users = User::all();
+        return view('admin.users.users', compact('users'));
+        dd($users);
+    }
+
+    /**
+     * Remove the specified user from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        User::destroy($id);
+        return redirect('admin/users');
+        // return Redirect::to('/user');
     }
 
     /**
@@ -53,6 +72,19 @@ class AuthController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
+    }
+
+    /**
+     * Show the form for editing the specified user.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $user = User::find($id);
+
+        return view('auth.register', [ 'user' => $user ]);
     }
 
     /**

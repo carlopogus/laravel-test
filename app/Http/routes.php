@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('carl', 'CarlController@index');
 Route::get('about', 'PagesController@about');
 
@@ -32,12 +28,23 @@ Route::get('about', 'PagesController@about');
 Route::group(['middleware' => ['web']], function () {
     // https://mattstauffer.co/blog/the-auth-scaffold-in-laravel-5-2
     Route::auth();
+    Route::get('admin/users', 'AuthController@users');
+    Route::get('home', 'HomeController@index')->name('home');
+
+    Route::get('/', function () {
+        return view('welcome');
+    });
+
     // https://laravel.com/docs/5.1/controllers#restful-resource-controllers
     Route::resource('articles', 'ArticlesController');
+    Route::resource('user', 'Auth\AuthController');
 
 });
 
 // https://mattstauffer.co/blog/middleware-groups-in-laravel-5-2
 Route::group(['middleware' => 'admin'], function () {
     Route::get('articles/create', 'ArticlesController@create');
+    Route::get('articles/{articles}/edit', 'ArticlesController@edit');
+    Route::get('admin/users', 'Auth\AuthController@users');
+    Route::get('admin/users/{users}/destroy', 'Auth\AuthController@destroy');
 });
